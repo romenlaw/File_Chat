@@ -13,6 +13,9 @@ class ChatbotGUI:
         # Create loading indicator
         self.loading_label = None
         
+        # Initialize chat history
+        self.chat_history = []
+        
         # Initialize the QA system
         self.embeddings = np.load('embeddings.npy')
         self.index = create_faiss_index(self.embeddings)
@@ -111,7 +114,7 @@ class ChatbotGUI:
         self.input_field.delete(0, tk.END)
         
         # Display user message
-        self.display_message(f"You: {question}", "user")
+        self.display_message(f"You: {question}\n", "user")
         
         # Disable input and show loading indicator
         self.input_field.config(state=tk.DISABLED)
@@ -128,7 +131,17 @@ class ChatbotGUI:
             relevant_chunks = search_chunks([question], self.chunks, self.index, self.embeddings)
             
             # Get AI response
-            answer = ask_ai_about_pdf(relevant_chunks, question, model=self.selected_model.get())
+            answer = ask_ai_about_pdf(relevant_chunks, question, self.chat_history, model=self.selected_model.get())
+            
+            # Update chat history
+            self.chat_history.extend([
+                {"role": "user", "content": question},
+                {"role": "assistant", "content": answer}
+            ])
+            
+            # Keep only last 20 messages
+            if len(self.chat_history) > 20:
+                self.chat_history = self.chat_history[-20:]
             
             # Display response
             self.root.after(0, self.display_message, f"Assistant: {answer}", "assistant")
