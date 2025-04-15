@@ -4,4 +4,5 @@ Then the GUI reads the chunks and embeddings to allow users to ask questions abo
 It uses openAI api to talk to the LLM. 
 
 It is based on my pdf_playgound.ipynb, but adapted to CBA environment. To run the GUI:
+
 python pdf_chat_gui.py
