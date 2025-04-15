@@ -3,4 +3,5 @@ This little app ingest a PDF file, chunk, embedd it and save the chunks and embe
 Then the GUI reads the chunks and embeddings to allow users to ask questions about the PDF.
 It uses openAI api to talk to the LLM. 
 
-It is based on my pdf_playgound.ipynb, but adapted to CBA environment.
+It is based on my pdf_playgound.ipynb, but adapted to CBA environment. To run the GUI:
+python pdf_chat_gui.py
